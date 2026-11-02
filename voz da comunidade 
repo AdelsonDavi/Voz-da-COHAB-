@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#075db7">
+<title>Voz da COHAB — Protótipo funcional</title>
+<style>
+:root{--blue:#075db7;--blue2:#0b73d9;--navy:#0b2d59;--pale:#eaf5ff;--line:#d8e7f6;--text:#15365d;--muted:#617894;--white:#fff;--green:#13a66a;--red:#e34854;--yellow:#f2b600;--purple:#7b43d6}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:#f3f8fd;color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer}
+header{background:linear-gradient(110deg,#064f9e,#0879d8);color:white;padding:14px max(18px,calc((100vw - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:5;box-shadow:0 4px 18px #003b7726}
+.brand{display:flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.5px;font-size:20px}.brandmark{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:white;color:var(--blue);font-size:25px}.header-right{font-size:13px;opacity:.95}
+.shell{max-width:1120px;margin:22px auto;padding:0 16px 36px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:20px}
+aside,.panel,.hero{background:white;border:1px solid var(--line);border-radius:20px;box-shadow:0 8px 24px #124d7d0a}
+aside{padding:12px;height:max-content;position:sticky;top:82px}.navbtn{display:flex;align-items:center;gap:11px;width:100%;border:0;background:transparent;color:var(--text);padding:13px 12px;border-radius:12px;text-align:left;font-weight:700;margin:2px 0}.navbtn.active,.navbtn:hover{background:var(--pale);color:var(--blue)}.navicon{font-size:19px;width:24px;text-align:center}
+main{min-width:0}.hero{padding:25px;background:linear-gradient(120deg,#e6f3ff,#fff 75%);display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:18px}.hero h1{font-size:clamp(24px,3vw,34px);margin:0 0 8px;color:var(--navy);letter-spacing:-.8px}.hero p{margin:0;line-height:1.55;color:#496987;max-width:570px}.heroicon{font-size:62px;background:white;border-radius:22px;padding:14px;box-shadow:0 8px 20px #075db71a}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}.stat{background:white;border:1px solid var(--line);border-radius:16px;padding:17px}.stat .n{font-size:26px;font-weight:850;color:var(--blue)}.stat .l{font-size:12px;color:var(--muted);font-weight:650;margin-top:3px}
+.panel{padding:22px;margin-bottom:18px}.panel h2{margin:0 0 5px;color:var(--navy);font-size:21px}.sub{color:var(--muted);font-size:14px;margin:0 0 18px;line-height:1.5}
+.categories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.category{border:1px solid var(--line);background:#fff;border-radius:13px;padding:12px;display:flex;align-items:center;gap:10px;text-align:left;color:var(--text);font-weight:700}.category.selected{border-color:var(--blue);background:#edf6ff;box-shadow:0 0 0 2px #0b73d91b}.caticon{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;color:white;font-size:18px;flex-shrink:0}.category small{display:block;font-size:11px;color:var(--muted);font-weight:500;margin-top:3px}
+.btn{border:0;border-radius:12px;background:var(--blue);color:white;font-weight:800;padding:12px 17px;box-shadow:0 4px 10px #075db71a}.btn:hover{background:#064a91}.btn.secondary{background:white;color:var(--blue);border:1px solid #8bbef0;box-shadow:none}.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}
+label{font-size:13px;font-weight:750;display:block;margin:13px 0 6px}input,select,textarea{width:100%;border:1px solid #c8dced;border-radius:11px;padding:12px;background:white;color:var(--text);outline:none}input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #0b73d91a}textarea{min-height:100px;resize:vertical}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.notice{padding:12px 14px;border-radius:12px;background:#eff8ff;color:#225d90;font-size:13px;line-height:1.45;margin-top:14px}.hidden{display:none!important}
+.resultrow{display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:11px;align-items:center;padding:13px 0;border-bottom:1px solid #e8f0f7}.resultrow:last-child{border:0}.resulticon{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;color:white;font-size:18px}.resultname{font-weight:750}.resultmeta{font-size:12px;color:var(--muted);margin-top:3px}.bar{height:7px;border-radius:20px;background:#eaf1f8;overflow:hidden;margin-top:8px}.bar span{height:100%;display:block;border-radius:20px}.percent{font-size:13px;font-weight:850}
+.mapfake{height:240px;border-radius:15px;overflow:hidden;position:relative;background-color:#e7f0df;background-image:linear-gradient(25deg,transparent 47%,#fff 48%,#fff 51%,transparent 52%),linear-gradient(115deg,transparent 46%,#fff 47%,#fff 50%,transparent 51%),linear-gradient(70deg,transparent 48%,#c9d9bf 49%,#c9d9bf 50%,transparent 51%);background-size:100px 80px,130px 100px,160px 120px;border:1px solid #d7e6d1}.pin{position:absolute;width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;color:white;font-size:12px;box-shadow:0 3px 8px #0002}.pin b{transform:rotate(45deg)}.demand{border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}.demandtop{display:flex;justify-content:space-between;gap:10px;align-items:start}.pill{background:#e9f5ff;color:var(--blue);font-size:11px;font-weight:800;padding:5px 8px;border-radius:99px;white-space:nowrap}.muted{color:var(--muted);font-size:13px;line-height:1.5}.empty{padding:25px;text-align:center;color:var(--muted);background:#f7fbff;border-radius:13px}
+footer{text-align:center;color:#7790a9;font-size:12px;padding:12px}
+@media(max-width:760px){.shell{grid-template-columns:1fr;margin-top:12px}.shell aside{position:static;display:flex;overflow:auto;padding:7px;gap:4px}.navbtn{white-space:nowrap;width:auto;padding:10px}.navbtn span:last-child{font-size:12px}.navicon{width:auto}.cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.stat{padding:12px}.stat .n{font-size:21px}.hero{padding:20px}.heroicon{font-size:40px;padding:9px}.categories{grid-template-columns:1fr}.panel{padding:17px}.header-right{display:none}}
+@media(max-width:420px){.formgrid{grid-template-columns:1fr}.heroicon{display:none}.cards .l{font-size:10px}.cards .n{font-size:19px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><span class="brandmark">⌂</span><span>Voz da COHAB</span></div><div class="header-right">Sua opinião constrói uma COHAB melhor.</div></header>
+<div class="shell">
+<aside aria-label="Navegação">
+<button class="navbtn active" data-page="inicio"><span class="navicon">⌂</span><span>Início</span></button>
+<button class="navbtn" data-page="votar"><span class="navicon">☑</span><span>Votar</span></button>
+<button class="navbtn" data-page="registrar"><span class="navicon">＋</span><span>Registrar demanda</span></button>
+<button class="navbtn" data-page="mapa"><span class="navicon">⌖</span><span>Mapa</span></button>
+<button class="navbtn" data-page="relatorio"><span class="navicon">▥</span><span>Relatórios</span></button>
+<button class="navbtn" data-page="perfil"><span class="navicon">♙</span><span>Perfil</span></button>
+</aside>
+<main>
+<section id="page-inicio" class="page">
+<div class="hero"><div><h1>O bairro melhor começa com a sua voz.</h1><p>Vote nas prioridades da comunidade, registre problemas do seu bairro e acompanhe as demandas da COHAB em um só lugar.</p><div class="btnrow"><button class="btn" data-goto="votar">Participar da votação →</button><button class="btn secondary" data-goto="registrar">Registrar um problema</button></div></div><div class="heroicon">🏘️</div></div>
+<div class="cards"><div class="stat"><div class="n" id="stat-votes">1.000</div><div class="l">participações na votação</div></div><div class="stat"><div class="n" id="stat-demands">12</div><div class="l">demandas registradas</div></div><div class="stat"><div class="n">5</div><div class="l">áreas prioritárias</div></div></div>
+<div class="panel"><h2>Prioridades da comunidade</h2><p class="sub">Resultado demonstrativo — os votos enviados neste protótipo atualizam os resultados localmente neste navegador.</p><div id="home-results"></div><div class="btnrow"><button class="btn secondary" data-goto="relatorio">Ver painel completo</button></div></div>
+<div class="panel"><h2>Demandas recentes</h2><p class="sub">Veja o que a comunidade está relatando.</p><div id="home-demands"></div></div>
+</section>
+<section id="page-votar" class="page hidden">
+<div class="panel"><h2>Qual é o problema mais urgente da nossa COHAB?</h2><p class="sub">Escolha até 3 prioridades. Seu voto é registrado neste navegador para demonstrar o funcionamento do aplicativo.</p><div class="categories" id="vote-categories"></div><div class="notice" id="vote-count">0 de 3 prioridades selecionadas.</div><div class="btnrow"><button class="btn" id="submit-vote">Enviar meu voto</button><button class="btn secondary" id="clear-vote">Limpar seleção</button></div><div id="vote-message"></div></div>
+</section>
+<section id="page-registrar" class="page hidden">
+<div class="panel"><h2>Registrar uma demanda</h2><p class="sub">Conte o que está acontecendo para ajudar a comunidade a dar visibilidade ao problema.</p>
+<form id="demand-form"><div class="formgrid"><div><label for="category">Categoria</label><select id="category" required></select></div><div><label for="location">Localização / bloco</label><input id="location" required placeholder="Ex.: Bloco 12 - COHAB"></div></div>
+<label for="title">Título do problema</label><input id="title" required maxlength="90" placeholder="Ex.: Falta de iluminação na entrada">
+<label for="description">Descrição</label><textarea id="description" required maxlength="500" placeholder="Descreva o problema, quando acontece e quem é afetado..."></textarea>
+<div class="formgrid"><div><label for="duration">Há quanto tempo existe?</label><select id="duration"><option>Menos de uma semana</option><option>1 a 4 semanas</option><option>1 a 6 meses</option><option>Mais de 6 meses</option><option>Não sei informar</option></select></div><div><label for="contact">Contato (opcional)</label><input id="contact" placeholder="E-mail ou telefone"></div></div>
+<label for="photo">Foto (opcional)</label><input id="photo" type="file" accept="image/*">
+<div class="notice">Não inclua senhas ou informações pessoais sensíveis. Este protótipo guarda os registros apenas no navegador e não envia dados à COHAB.</div><div class="btnrow"><button class="btn" type="submit">Registrar demanda</button><button class="btn secondary" type="reset">Limpar formulário</button></div></form><div id="demand-message"></div></div>
+</section>
+<section id="page-mapa" class="page hidden"><div class="panel"><h2>Mapa das demandas da COHAB</h2><p class="sub">Visualização ilustrativa das ocorrências registradas. Os marcadores não representam coordenadas reais.</p><div class="mapfake" id="mapfake"><span class="pin" style="left:17%;top:20%;background:#e34854"><b>!</b></span><span class="pin" style="left:40%;top:45%;background:#f2b600"><b>!</b></span><span class="pin" style="left:69%;top:24%;background:#13a66a"><b>!</b></span><span class="pin" style="left:80%;top:67%;background:#7b43d6"><b>!</b></span><span class="pin" style="left:31%;top:72%;background:#0879d8"><b>!</b></span></div><div class="btnrow"><button class="btn secondary" data-goto="registrar">Adicionar demanda</button></div></div><div class="panel"><h2>Demandas por região</h2><div id="map-demands"></div></div></section>
+<section id="page-relatorio" class="page hidden"><div class="panel"><h2>Painel da comunidade</h2><p class="sub">Resumo das prioridades e das demandas registradas nesta sessão de demonstração.</p><div id="report-results"></div><div class="btnrow"><button class="btn" id="export-csv">Exportar relatório CSV</button><button class="btn secondary" id="reset-data">Restaurar dados de demonstração</button></div></div><div class="panel"><h2>Todas as demandas</h2><div id="all-demands"></div></div></section>
+<section id="page-perfil" class="page hidden"><div class="panel"><h2>Seu perfil</h2><p class="sub">Personalize sua participação na comunidade. O perfil é local e demonstrativo.</p><form id="profile-form"><label for="name">Como podemos chamar você?</label><input id="name" placeholder="Seu nome ou apelido"><label for="region">Sua região / bloco</label><input id="region" placeholder="Ex.: Região Norte, Bloco 12"><div class="btnrow"><button class="btn" type="submit">Salvar perfil</button></div></form><div id="profile-message"></div><div class="notice">Privacidade: esta versão não possui servidor, login real ou envio de dados. As informações ficam no armazenamento local deste navegador.</div></div></section>
+<footer>Voz da COHAB • Protótipo funcional demonstrativo • Não é um canal oficial da COHAB</footer>
+</main>
+</div>
+<script>
+const cats=[
+{name:"Habitação e regularização",icon:"⌂",color:"#0b73d9"},
+{name:"Iluminação pública",icon:"☼",color:"#f2b600"},
+{name:"Segurança",icon:"⬟",color:"#e34854"},
+{name:"Saúde",icon:"✚",color:"#13a66a"},
+{name:"Transporte",icon:"▰",color:"#7b43d6"},
+{name:"Ruas e calçadas",icon:"⚒",color:"#54758d"},
+{name:"Água e esgoto",icon:"♒",color:"#00a7df"},
+{name:"Limpeza urbana",icon:"♲",color:"#70ad28"},
+{name:"Praças e áreas de lazer",icon:"♣",color:"#42a85b"},
+{name:"Educação",icon:"✉",color:"#7b43d6"},
+{name:"Emprego e cursos",icon:"▣",color:"#0b73d9"}
+];
+const defaults={votes:{"Segurança":380,"Saúde":240,"Iluminação pública":180,"Transporte":120,"Emprego e cursos":80},demands:[
+{id:1,category:"Segurança",title:"Falta de policiamento e iluminação",location:"Bloco 12 - COHAB",description:"Pouca iluminação na entrada do bloco e preocupação dos moradores à noite.",duration:"Mais de 6 meses",status:"Recebida",date:"Exemplo"},
+{id:2,category:"Iluminação pública",title:"Lâmpadas apagadas na praça",location:"Região Central",description:"A iluminação da praça precisa de manutenção.",duration:"1 a 6 meses",status:"Recebida",date:"Exemplo"},
+{id:3,category:"Saúde",title:"Solicitação de atendimento ampliado",location:"Região Sul",description:"Moradores relatam dificuldade para conseguir atendimento em alguns horários.",duration:"1 a 4 semanas",status:"Em análise",date:"Exemplo"}
+],voters:1000,nextId:4,profile:{name:"",region:""}};
+let state;
+try{state=JSON.parse(localStorage.getItem("vozCohabData"))||structuredClone(defaults)}catch(e){state=JSON.parse(JSON.stringify(defaults))}
+let selected=new Set();
+function save(){localStorage.setItem("vozCohabData",JSON.stringify(state));renderAll()}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function cat(name){return cats.find(c=>c.name===name)||{name,icon:"•",color:"#54758d"}}
+function nav(page){document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));document.getElementById("page-"+page).classList.remove("hidden");document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.page===page));window.scrollTo({top:0,behavior:"smooth"});if(page==="votar")renderVoteCats()}
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>nav(b.dataset.page)));
+document.querySelectorAll("[data-goto]").forEach(b=>b.addEventListener("click",()=>nav(b.dataset.goto)));
+function resultsHTML(){let entries=Object.entries(state.votes).sort((a,b)=>b[1]-a[1]);let total=entries.reduce((s,e)=>s+e[1],0)||1;return entries.slice(0,8).map(([name,n],i)=>{let c=cat(name),pct=Math.round(n/total*100);return `<div class="resultrow"><div class="resulticon" style="background:${c.color}">${c.icon}</div><div><div class="resultname">${i+1}º ${esc(name)}</div><div class="bar"><span style="width:${pct}%;background:${c.color}"></span></div></div><div class="percent">${pct}%</div></div>`}).join("")}
+function demandsHTML(list){if(!list.length)return '<div class="empty">Nenhuma demanda registrada ainda. Seja a primeira pessoa a contribuir.</div>';return list.slice().reverse().map(d=>{let c=cat(d.category);return `<article class="demand"><div class="demandtop"><div><div class="resultname"><span style="color:${c.color}">${c.icon}</span> ${esc(d.title)}</div><div class="resultmeta">${esc(d.location)} · ${esc(d.category)} · ${esc(d.date)}</div></div><span class="pill">${esc(d.status)}</span></div><p class="muted">${esc(d.description)}</p></article>`}).join("")}
+function renderVoteCats(){document.getElementById("vote-categories").innerHTML=cats.map(c=>`<button type="button" class="category ${selected.has(c.name)?"selected":""}" data-cat="${esc(c.name)}"><span class="caticon" style="background:${c.color}">${c.icon}</span><span>${esc(c.name)}<small>${selected.has(c.name)?"Selecionada":"Toque para selecionar"}</small></span></button>`).join("");document.querySelectorAll("[data-cat]").forEach(b=>b.addEventListener("click",()=>{let n=b.dataset.cat;if(selected.has(n))selected.delete(n);else if(selected.size<3)selected.add(n);else{document.getElementById("vote-message").innerHTML='<div class="notice">Você pode selecionar no máximo 3 prioridades.</div>';return}document.getElementById("vote-count").textContent=`${selected.size} de 3 prioridades selecionadas.`;document.getElementById("vote-message").innerHTML="";renderVoteCats()}))}
+document.getElementById("submit-vote").addEventListener("click",()=>{if(!selected.size){document.getElementById("vote-message").innerHTML='<div class="notice">Selecione ao menos uma prioridade antes de enviar.</div>';return}selected.forEach(n=>state.votes[n]=(state.votes[n]||0)+1);state.voters++;selected.clear();document.getElementById("vote-message").innerHTML='<div class="notice">Voto de demonstração registrado neste navegador. Obrigado por participar!</div>';document.getElementById("vote-count").textContent="0 de 3 prioridades selecionadas.";save();renderVoteCats()});
+document.getElementById("clear-vote").addEventListener("click",()=>{selected.clear();document.getElementById("vote-count").textContent="0 de 3 prioridades selecionadas.";document.getElementById("vote-message").innerHTML="";renderVoteCats()});
+document.getElementById("category").innerHTML=cats.map(c=>`<option>${esc(c.name)}</option>`).join("");
+document.getElementById("demand-form").addEventListener("submit",e=>{e.preventDefault();const file=document.getElementById("photo").files[0];const d={id:state.nextId++,category:document.getElementById("category").value,location:document.getElementById("location").value.trim(),title:document.getElementById("title").value.trim(),description:document.getElementById("description").value.trim(),duration:document.getElementById("duration").value,status:"Recebida",date:new Date().toLocaleDateString("pt-BR"),photo:file?file.name:""};state.demands.push(d);save();e.target.reset();document.getElementById("demand-message").innerHTML='<div class="notice">Demanda registrada com sucesso neste navegador. Protocolo demonstrativo: COHAB-'+String(d.id).padStart(5,"0")+'.</div>';});
+document.getElementById("profile-form").addEventListener("submit",e=>{e.preventDefault();state.profile={name:document.getElementById("name").value.trim(),region:document.getElementById("region").value.trim()};save();document.getElementById("profile-message").innerHTML='<div class="notice">Perfil salvo neste navegador.</div>'});
+document.getElementById("export-csv").addEventListener("click",()=>{let rows=[["Categoria","Título","Localização","Descrição","Status","Data"],...state.demands.map(d=>[d.category,d.title,d.location,d.description,d.status,d.date])];let csv="\\ufeff"+rows.map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";")).join("\\r\\n");let url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8;"}));let a=document.createElement("a");a.href=url;a.download="relatori
